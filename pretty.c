@@ -1216,7 +1216,7 @@ int format_set_trailers_options(struct process_trailer_options *opts,
 
 static size_t parse_describe_args(const char *start, struct strvec *args)
 {
-	const char *options[] = { "match", "exclude" };
+	const char *option_arguments[] = { "match", "exclude" };
 	const char *arg = start;
 
 	for (;;) {
@@ -1225,10 +1225,10 @@ static size_t parse_describe_args(const char *start, struct strvec *args)
 		size_t arglen = 0;
 		int i;
 
-		for (i = 0; i < ARRAY_SIZE(options); i++) {
-			if (match_placeholder_arg_value(arg, options[i], &arg,
+		for (i = 0; i < ARRAY_SIZE(option_arguments); i++) {
+			if (match_placeholder_arg_value(arg, option_arguments[i], &arg,
 							&argval, &arglen)) {
-				matched = options[i];
+				matched = option_arguments[i];
 				break;
 			}
 		}
