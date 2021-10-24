@@ -1217,7 +1217,7 @@ int format_set_trailers_options(struct process_trailer_options *opts,
 static size_t parse_describe_args(const char *start, struct strvec *args)
 {
 	const char *options[] = { "tags" };
-	const char *option_arguments[] = { "match", "exclude" };
+	const char *option_arguments[] = { "match", "exclude", "abbrev" };
 	const char *arg = start;
 
 	for (;;) {
