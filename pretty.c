@@ -1216,28 +1216,43 @@ int format_set_trailers_options(struct process_trailer_options *opts,
 
 static size_t parse_describe_args(const char *start, struct strvec *args)
 {
+	const char *options[] = { "tags" };
 	const char *option_arguments[] = { "match", "exclude" };
 	const char *arg = start;
 
 	for (;;) {
 		const char *matched = NULL;
-		const char *argval;
+		const char *argval = NULL;
 		size_t arglen = 0;
+		int optval = 0;
 		int i;
 
 		for (i = 0; i < ARRAY_SIZE(option_arguments); i++) {
 			if (match_placeholder_arg_value(arg, option_arguments[i], &arg,
 							&argval, &arglen)) {
 				matched = option_arguments[i];
+				if (!arglen)
+					return 0;
 				break;
 			}
 		}
 		if (!matched)
+			for (i = 0; i < ARRAY_SIZE(options); i++) {
+				if (match_placeholder_bool_arg(arg, options[i], &arg,
+								&optval)) {
+					matched = options[i];
+					break;
+				}
+			}
+		if (!matched)
 			break;
 
-		if (!arglen)
-			return 0;
-		strvec_pushf(args, "--%s=%.*s", matched, (int)arglen, argval);
+
+		if (argval) {
+			strvec_pushf(args, "--%s=%.*s", matched, (int)arglen, argval);
+		} else if (optval) {
+			strvec_pushf(args, "--%s", matched);
+		}
 	}
 	return arg - start;
 }
