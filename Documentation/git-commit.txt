@@ -213,8 +213,13 @@ include::signoff-option.txt[]
 
 -n::
 --no-verify::
-	This option bypasses the pre-commit and commit-msg hooks.
+	By default, pre-commit and commit-msg hooks are run. When one of these
+	options is given, the hooks will be bypassed.
 	See also linkgit:githooks[5].
+
+--verify::
+	This option re-enables running of the pre-commit and commit-msg hooks
+	after an earlier `-n` or `--no-verify`.
 
 --allow-empty::
 	Usually recording a commit that has the exact same tree as its
